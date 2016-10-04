@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Houzier Demo</title>
+
+	<meta name="author" content="Mad Machines">
+	<meta name="description" content="Houzier- Find food & restaurents around you.">
+	<meta name="keywords" content="food,recommendation,new-delhi,india,restaurants,ambience,cost,service,NLP,AI,chat">
+	<link rel="shortcut icon" type="image/png" href="css/images/favicon.png" />
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Tillana|Pacifico" rel="stylesheet">
+  <script src="js/libs/jquery.js" type="text/javascript"></script>    
+  <script src="js/libs/underscore.js" type="text/javascript"></script>
+  <script src="js/libs/backbone.js" type="text/javascript"></script>
+  <script src="js/libs/newsentimentui.js" type="text/javascript"></script>
+  <script src="js/libs/materialize.min.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.js" type="text/javascript"></script>
+  
+  <link rel="stylesheet" href="css/materialize.min.css"> 
+
+</head>
+
+<body>
+		<script type="text/template" id="nounPhraseTemplate">
+        <div class="row">
+        			<div class="col s6 m6">
+            					<p class="#455a64 blue-grey darken-2" style="font-size: 20px">
+			            									Noun Phrase: {{title}}
+
+													</p>
+        			</div>
+      </div>		
+
+		</script>
+		<script type="text/template" id="perSentenceTemplate">
+    <div class="row" style="{color: black}">
+    					<form class="col s12" style="text: black; font-weight: bold">
+      						<div class="row">
+        							<div class="input-field col s6">
+                          <input disabled value="{{sentence}}" type="text" class="validate">
+        						</div>
+        						<div class="input-field col s2">
+                          <input disabled value="{{sentiment}}" type="text" class="validate">
+        						</div>
+        						<div class="input-field col s2">
+                          <input disabled value="{{category}}" type="text" class="validate">
+        						</div>
+        						<div class="input-field col s2">
+                          <input disabled value="{{sub_category}}"  type="text" class="validate">
+        						</div>
+      					</div>
+						</form>
+ 				 </div>
+      
+		</script>
+
+
+		<script type="text/template" id="afterBodyTemplate">
+							<div class="row" style="font-family: 'Tillana', cursive;">
+    							<form class="col s10 left-align">
+      								<div class="row center-align">
+													<div class="col s6">
+        											<div class="input-field col s12">
+																		<input type="text"  id="jhandu" class="queryComplete"></textarea>
+          													<label for="jhandu">Any Eatery Name, Dish or Cuisine or lets us surprise you.</label>
+        											</div>
+													</div>	
+													<div class="col s3">
+															<a class="waves-effect waves-light btn #455a64 blue-grey darken-2 querySubmit">Submit</a>  
+													</div>
+													</div>
+      								</div>
+    							</form>
+  						</div>
+
+    
+    </script>
+		<script type="text/template" id="bodytemplate">
+
+							<div class="row center-align">
+									<h2 class="heading-text" style="font-family: 'Pacifico',cursive;">Houzier Food Domain Demo 1.0</h2>
+									<h6 class="heading-text" style="font-family: 'Tillana',cursive;">All the data has been generated from natural language processing of the reviews available on social media. Right now available in delhi only</h6>
+									<h6 class="heading-text" style="font-family: 'Tillana',cursive;">You can search any restaurant, any cuisine, any dish in delhi.</h6>
+							</div>
+
+
+              <br/>
+              <br/>
+              <br/> 
+              <br/> 
+              <br/> 
+              <br/> 
+              <br/> 
+              <br/> 
+              <br/> 
+							<div class="row" style="font-family: 'Tillana', cursive;">
+    							<form class="col s10 left-align">
+      								<div class="row center-align">
+													<div class="col s6">
+        											<div class="input-field col s12">
+																		<input type="text"  id="jhandu" class="customautocomplete"></textarea>
+          													<label for="jhandu">Any Eatery Name, Dish or Cuisine or lets us surprise you.</label>
+        											</div>
+													</div>	
+													<div class="col s3">
+															<a class="waves-effect waves-light btn #455a64 blue-grey darken-2 textsubmit">Submit</a>  
+													</div>
+													<div class="col s3">
+													
+                                <a class="waves-effect waves-light btn #455a64 blue-grey darken-2 surprisesubmit">Surprise Me!</a>  
+													</div>
+													</div>
+      								</div>
+    							</form>
+  						</div>
+
+				<div clas="row" id="sentences" style="font-family: 'Tillana', cursive;">
+        </div>
+		</script>	
+		<div class="container" id="main-container">
+				<!-- Every stuff goes here dude! -->
+		</div>
+		<script src="js/variables.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/main.js"></script>
+    <!-- <script src="js/for_one_page.js"></script> -->
+    
+    <script>$(function() {App.boot($('#main-container')); });</script> 
+
+</body>
+
+</html>
