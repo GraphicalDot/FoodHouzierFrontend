@@ -2,12 +2,12 @@ $(document).ready(function(){
 
 App.RootView = Backbone.View.extend({
       template: $("#bodytemplate").html(),
-      
+
       initialize: function(options){
 					var self = this;
           this.el = options.el
         },
-  
+
       render: function(){
           //http://coenraets.org/blog/2011/12/tutorial-html-templates-with-mustache-js/
           //$("#main-container").html(Mustache.to_html(this.template));
@@ -21,25 +21,25 @@ App.RootView = Backbone.View.extend({
 									belowOrigin: false, // Displays dropdown below the button
 									alignment: 'left' // Displays dropdown with edge aligned to the left of button
     																		});
-     
-          return this; 
-	      },  
+
+          return this;
+	      },
 
 			events: {
           'click .textsubmit': 'textSubmit',
           'click .surprisesubmit': 'surpriseSubmit',
 						},
-			
+
 
       surpriseSubmit: function(event){
           //This gets activated when clicked on the submit button, Now the
-          //result will be based ont he text value available in class 
+          //result will be based ont he text value available in class
           //cutomautocomplete
           ;event.preventDefault();
 					;var subView = new App.AfterMainPageView();
-          ;$("#main-container").html(subView.render().el)            
-          return 
-      
+          ;$("#main-container").html(subView.render().el)
+          return
+
       },
 
       textSubmit: function(e){
@@ -50,32 +50,32 @@ App.RootView = Backbone.View.extend({
 						var jqhr = $.post(window.URL, {"text": text})
 						jqhr.done(function(data){
 									if (data.success == true){
-													
-                          self.$("#sentences").html("")     
+
+                          self.$("#sentences").html("")
                           $.each(data.noun_phrases, function(index, title){
 										              var subView = new App.CardView({model: {"title": title}});
-                                self.$("#sentences").append(subView.render().el)            
+                                self.$("#sentences").append(subView.render().el)
                             })
                           var subView = new App.IntermediatePerSentenceView({"model": data.result})
                                   self.$("#sentences").append(subView.render().el);
-                    
+
                           //var subView = new App.PerSentenceView({model: {"result": data.result, "sentence": sentence, "grams": grams, parent: self}});
 													//self.$el.after(subView.render().el);
                    }
                   else {
-											Materialize.toast(data.message, 4000, 'rounded')  
+											Materialize.toast(data.message, 4000, 'rounded')
                       }
                 })
 
 						jqhr.fail(function(){
-									Materialize.toast('Either the api or internet connection is not working, Sorry, Please try again later', 4000, 'rounded')  
+									Materialize.toast('Either the api or internet connection is not working, Sorry, Please try again later', 4000, 'rounded')
                         })
         },
-      
-      
-       
-      
-      
+
+
+
+
+
 
 
 });
@@ -85,10 +85,25 @@ App.AfterMainPageView = Backbone.View.extend({
         className: "afterBody",
         template: $("#afterBodyTemplate").html(),
         initialize: function(){
-        }, 
+        },
 
         render: function(){
               var self = this;
+              this.model = {items:[
+                {'name':'Pixel', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
+                'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
+                ,{'name':'Pixel XL', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
+                'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
+                ,{'name':'Pixel XL CHUU', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
+                'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
+                ,{'name':'Pixel XL MA', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
+                'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
+                ,{'name':'Pixel XL KI', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
+                'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
+                ,{'name':'Pixel XL CHUU', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
+                'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
+
+              ]}
               this.$el.html(Mustache.to_html(this.template, self.model));
               return this;
         },
@@ -113,7 +128,7 @@ App.CardView = Backbone.View.extend({
         initialize: function(options){
               this.model = options.model;
               console.log(this.model) ;
-        }, 
+        },
 
         render: function(){
               var self = this;
@@ -126,17 +141,17 @@ App.CardView = Backbone.View.extend({
 
 App.IntermediatePerSentenceView = Backbone.View.extend({
         tagName: "ul",
-        className: "collection", 
+        className: "collection",
         initialize: function(options){
               this.model = options.model
-        
-        }, 
+
+        },
 
         render: function(){
               var self = this;
               $.each(this.model, function(index, result_object){
 										var subView = new App.PerSentenceView({model: result_object});
-                    self.$el.append(subView.render().el)            
+                    self.$el.append(subView.render().el)
               })
               return this;
         },
@@ -144,13 +159,13 @@ App.IntermediatePerSentenceView = Backbone.View.extend({
 });
 App.PerSentenceView = Backbone.View.extend({
         tagName: "li",
-        className: "collection-item", 
+        className: "collection-item",
         template: $("#perSentenceTemplate").html(),
         initialize: function(options){
               this.model = options.model
-              console.log(this.model.sentence); 
-        
-        }, 
+              console.log(this.model.sentence);
+
+        },
 
         render: function(){
               var self = this;
