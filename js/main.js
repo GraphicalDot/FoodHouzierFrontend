@@ -1,8 +1,24 @@
 $(document).ready(function(){
+// Load template via ajax call
+function loadTemplates(path){
+  var tmpl_string;
+  $.ajax({
+      url: 'templates/'+path,
+      method: 'GET',
+      dataType: 'html',
+      async: false,
+      success: function(data) {
+          tmpl_string = data;
+      },
+      error: function(data){
+        console.log('[main.js: ln 100] **'+path+'** template not loaded');
+      }
+  });
+  return tmpl_string;
+}
 
 App.RootView = Backbone.View.extend({
-      template: $("#bodytemplate").html(),
-
+      template: loadTemplates('body.html'),
       initialize: function(options){
 					var self = this;
           this.el = options.el
@@ -71,63 +87,47 @@ App.RootView = Backbone.View.extend({
 									Materialize.toast('Either the api or internet connection is not working, Sorry, Please try again later', 4000, 'rounded')
                         })
         },
-
-
-
-
-
-
-
 });
 
 App.AfterMainPageView = Backbone.View.extend({
         tagName: "div",
         className: "afterBody",
-        template: $("#afterBodyTemplate").html(),
+        template: loadTemplates('afterBody.html'),
         initialize: function(){
+          this.model = {items:[
+            {'name':'Pixel', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
+            'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
+            ,{'name':'Pixel XL', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
+            'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
+            ,{'name':'Pixel XL CHUU', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
+            'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
+            ,{'name':'Pixel XL MA', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
+            'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
+            ,{'name':'Pixel XL KI', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
+            'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
+            ,{'name':'Pixel XL CHUU', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
+            'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
+
+          ]}
         },
 
         render: function(){
-              var self = this;
-              this.model = {items:[
-                {'name':'Pixel', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
-                'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
-                ,{'name':'Pixel XL', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
-                'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
-                ,{'name':'Pixel XL CHUU', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
-                'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
-                ,{'name':'Pixel XL MA', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
-                'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
-                ,{'name':'Pixel XL KI', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
-                'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
-                ,{'name':'Pixel XL CHUU', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
-                'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
-
-              ]}
-              this.$el.html(Mustache.to_html(this.template, self.model));
+              this.$el.html(Mustache.to_html(this.template, this.model));
               return this;
         },
-
-
 			events: {
           'click .querysubmit': 'textSubmit',
 						},
-
-
-
 })
-
-
-
 
 App.CardView = Backbone.View.extend({
         //meant for each noun phrase and place name
         tagName: "div",
         className: "row",
-        template: $("#nounPhraseTemplate").html(),
+        template: loadTemplates('nounPhrase.html'),
         initialize: function(options){
               this.model = options.model;
-              console.log(this.model) ;
+              // console.log(this.model) ;
         },
 
         render: function(){
@@ -160,7 +160,8 @@ App.IntermediatePerSentenceView = Backbone.View.extend({
 App.PerSentenceView = Backbone.View.extend({
         tagName: "li",
         className: "collection-item",
-        template: $("#perSentenceTemplate").html(),
+        // template: $("#perSentenceTemplate").html(),
+        template: loadTemplates('perSentence.html'),
         initialize: function(options){
               this.model = options.model
               console.log(this.model.sentence);
@@ -174,10 +175,4 @@ App.PerSentenceView = Backbone.View.extend({
         },
 
 });
-
-
-
-
-
-
 });

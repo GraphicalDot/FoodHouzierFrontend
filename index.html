@@ -16,6 +16,8 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Tillana|Pacifico" rel="stylesheet">
   <script src="js/libs/jquery.js" type="text/javascript"></script>
+  <script src="https://rawgit.com/markgoodyear/scrollup/master/dist/jquery.scrollUp.min.js" type="text/javascript"></script>
+
   <script src="js/libs/underscore.js" type="text/javascript"></script>
   <script src="js/libs/backbone.js" type="text/javascript"></script>
   <script src="js/libs/newsentimentui.js" type="text/javascript"></script>
@@ -38,142 +40,22 @@
 </head>
 
 <body>
-		<script type="text/template" id="nounPhraseTemplate">
-        <div class="row">
-        			<div class="col s6 m6">
-            					<p class="#455a64 blue-grey darken-2" style="font-size: 20px">
-			            									Noun Phrase: {{title}}
+		<!-- List of templates load via ajax call -->
+		<script type="text/template" id="nounPhraseTemplate"></script>
+		<script type="text/template" id="perSentenceTemplate"></script>
+		<script type="text/template" id="afterBodyTemplate"></script>
+		<script type="text/template" id="bodytemplate"></script>
+		<!-- End of templates -->
 
-													</p>
-        			</div>
-      </div>
-
-		</script>
-		<script type="text/template" id="perSentenceTemplate">
-    <div class="row" style="{color: black}">
-    					<form class="col s12" style="text: black; font-weight: bold">
-      						<div class="row">
-        							<div class="input-field col s6">
-                          <input disabled value="{{sentence}}" type="text" class="validate">
-        						</div>
-        						<div class="input-field col s2">
-                          <input disabled value="{{sentiment}}" type="text" class="validate">
-        						</div>
-        						<div class="input-field col s2">
-                          <input disabled value="{{category}}" type="text" class="validate">
-        						</div>
-        						<div class="input-field col s2">
-                          <input disabled value="{{sub_category}}"  type="text" class="validate">
-        						</div>
-      					</div>
-						</form>
- 				 </div>
-
-		</script>
-
-
-		<script type="text/template" id="afterBodyTemplate">
-			<section>
-			<div class="row">
-					<form class="col s12">
-							<div class="row">
-								<div class="input-field col s12	">
-									<i class="material-icons prefix">textsms</i>
-									<textarea id="jhandu" class="materialize-textarea"></textarea>
-									<label for="jhandu">Any Eatery Name, Dish or Cuisine or lets us surprise you.</label>
-								</div>
-							  <div class="input-field col-s3">
-							  <button class="btn waves-effect waves-light waves-effect waves-light #455a64 blue-grey" type="submit" name="action">Submit
-							    <i class="material-icons right">send</i>
-							  </button>
-								</div>
-							</div>
-					</form>
-			</div>
-		</section>
-		<!-- Block  -->
-		<section style="margin-top:10%;" class="container-fluid">
-			<div class="row col s12">
-				{{#items}}
-				<div class="col s4 shadow">
-					<h4>{{name}}</h4>
-					<hr>
-					<div class="row">
-						<div class="col s3"><p>Display</p></div>
-						<div class="col s9">
-							<p>{{display}}</p>
-						</div>
-
-						<div class="col s3"><p>Size</p></div>
-						<div class="col s9">
-							<p>{{size}}</p>
-						</div>
-
-						<div class="col s3"><p>Battery</p></div>
-						<div class="col s9">
-							<p>{{battery}}</p>
-						</div>
-					</div>
-				</div>
-				{{/items}}
-
-			</div>
-		</section>
-		<section style="margin-top:5%;">
-			<div></div>
-		</section>
-    </script>
-		<script type="text/template" id="bodytemplate">
-
-							<div class="row center-align">
-									<h2 class="heading-text" >Houzier Food Domain Demo 1.0</h2>
-									<h6 class="heading-text" >All the data has been generated from natural language processing of the reviews available on social media. Right now available in delhi only</h6>
-									<h6 class="heading-text" >You can search any restaurant, any cuisine, any dish in delhi.</h6>
-							</div>
-
-              <br/>
-              <br/>
-              <br/>
-              <br/>
-              <br/>
-              <br/>
-              <br/>
-              <br/>
-              <br/>
-							<div class="row">
-    							<form class="left-align">
-      								<div class="center-align">
-													<div class="col s8 offset-s2">
-        											<div class="input-field col s12 m12">
-																		<input type="text"  id="jhandu" class="customautocomplete"></textarea>
-          													<label for="jhandu">Any Eatery Name, Dish or Cuisine or lets us surprise you.</label>
-        											</div>
-													</div>
-													<div class="col s3  offset-s2">
-															<a class="waves-effect waves-light btn #455a64 blue-grey darken-2 textsubmit">Submit</a>
-													</div>
-													<div class="col s3">
-
-                                <a class="waves-effect waves-light btn #455a64 blue-grey darken-2 surprisesubmit">Surprise Me!</a>
-													</div>
-													</div>
-      								</div>
-    							</form>
-  						</div>
-
-				<div clas="row" id="sentences" style="font-family: 'Tillana', cursive;">
-        </div>
-		</script>
 		<div class="container" id="main-container">
-				<!-- Every stuff goes here dude! -->
+			<!-- Every stuff goes here dude! -->
 		</div>
+
 		<script src="js/variables.js"></script>
     <script src="js/router.js"></script>
     <script src="js/main.js"></script>
     <!-- <script src="js/for_one_page.js"></script> -->
-
     <script>$(function() {App.boot($('#main-container')); });</script>
-
 </body>
 
 </html>
