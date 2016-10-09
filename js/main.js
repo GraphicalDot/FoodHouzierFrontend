@@ -28,17 +28,39 @@ App.RootView = Backbone.View.extend({
           //http://coenraets.org/blog/2011/12/tutorial-html-templates-with-mustache-js/
           //$("#main-container").html(Mustache.to_html(this.template));
           this.$el.html(Mustache.to_html(this.template));
-          self.$('.dropdown-button').dropdown({
-									inDuration: 300,
-									outDuration: 225,
-									constrain_width: false, // Does not change width of dropdown to that of the activator
-									hover: true, // Activate on hover
-									gutter: 0, // Spacing from edge
-									belowOrigin: false, // Displays dropdown below the button
-									alignment: 'left' // Displays dropdown with edge aligned to the left of button
-    																		});
+           
+					var options = {
+						    categories: [{listLocation: "dish",
+                            maxNumberOfElements: 5,
+                            header: "Matching dishes names"}, 
+                        {listLocation: "eatery",
+                            maxNumberOfElements: 5,
+                            header: "Matching eateries names"},
+                        {listLocation: "cuisine",
+                            maxNumberOfElements: 4,
+                            header: "Matching cuisine names"}],
+                url: function(phrase) {
+											console.log(phrase);
+    									return "http://localhost:8000/suggestions";},
+					      getValue: function(element) {
+    							    return element;},
+  				      ajaxSettings: {
+    					        dataType: "json",
+    					        method: "POST",
+    					        data: {
+      					        dataType: "json",}
+  						    },
+  				      preparePostData: function(data) {
+    					        data.phrase = $("#autocomplete-ajax").val();
+                      return data;
+  					    },
+						    requestDelay: 400,
+						    theme: "plate-dark"
 
-          return this;
+                };
+					
+					      $("#autocomplete-ajax").easyAutocomplete(options);
+        return this;
 	      },
 
 			events: {
