@@ -1,5 +1,9 @@
 $(document).ready(function(){
 // Load template via ajax call
+
+window.searchtype = ""
+window.searchvalue = ""  
+  
 function loadTemplates(path){
   var tmpl_string;
   $.ajax({
@@ -30,6 +34,7 @@ App.RootView = Backbone.View.extend({
           this.$el.html(Mustache.to_html(this.template));
            
 					var options = {
+                placeholder: "Search for eatery, dish or cuisine",
 						    categories: [{listLocation: "dish",
                             maxNumberOfElements: 5,
                             header: "Matching dishes names"}, 
@@ -43,7 +48,7 @@ App.RootView = Backbone.View.extend({
 											console.log(phrase);
     									return "http://localhost:8000/suggestions";},
 					      getValue: function(element) {
-    							    return element;},
+    							    return element.name;},
   				      ajaxSettings: {
     					        dataType: "json",
     					        method: "POST",
@@ -55,9 +60,19 @@ App.RootView = Backbone.View.extend({
                       return data;
   					    },
 						    requestDelay: 400,
-						    theme: "plate-dark"
-
-                };
+						    theme: "plate-dark",
+                
+                list: {
+              
+                  onSelectItemEvent: function() {
+                        window.searchtype = $("#autocomplete-ajax").getSelectedItemData().type;
+                        window.searchvalue = $("#autocomplete-ajax").val();
+                  }
+                }
+               
+   
+   
+          };
 					
 					      $("#autocomplete-ajax").easyAutocomplete(options);
         return this;
@@ -83,23 +98,23 @@ App.RootView = Backbone.View.extend({
       textSubmit: function(e){
             e.preventDefault();
             this.$("#sentences").html('<div class="progress #455a64 blue-grey darken-2"><div class="indeterminate"></div></div>')
-						var text = $(".textProcessing").val();
+						var text = $("#autocomplete-ajax").val();
+            console.log(window.searchtype)
+            console.log(window.searchvalue)
 
-						var jqhr = $.post(window.URL, {"text": text})
+						var jqhr = $.post(window.text_search, {"text": window.searchvalue, type: window.searchtype})
 						jqhr.done(function(data){
 									if (data.success == true){
+                        if (window.searchtype == "dish" || window.searchtype == "cuisine"){
+					                  ;var subView = new App.DishSuggestionsResultView({"items": data.result});
+                             ;$("#main-container").html(subView.render().el)
+                   
+                        } else {
+					                  ;var subView = new App.EaterySuggestionsResultView({"items": data.result});
+                            ;$("#main-container").html(subView.render().el)
+                        };
 
-                          self.$("#sentences").html("")
-                          $.each(data.noun_phrases, function(index, title){
-										              var subView = new App.CardView({model: {"title": title}});
-                                self.$("#sentences").append(subView.render().el)
-                            })
-                          var subView = new App.IntermediatePerSentenceView({"model": data.result})
-                                  self.$("#sentences").append(subView.render().el);
-
-                          //var subView = new App.PerSentenceView({model: {"result": data.result, "sentence": sentence, "grams": grams, parent: self}});
-													//self.$el.after(subView.render().el);
-                   }
+                  }
                   else {
 											Materialize.toast(data.message, 4000, 'rounded')
                       }
@@ -111,26 +126,39 @@ App.RootView = Backbone.View.extend({
         },
 });
 
-App.AfterMainPageView = Backbone.View.extend({
+App.EaterySuggestionsResultView = Backbone.View.extend({
+        /*Redenred when a user search for the dish name on the search bar
+         * or in other words in window.searchtype == "dish" or 
+         * if searchtype is type cuisine, only in the case if eatery the result 
+         * would be different then these two above mentioned cases 
+         */
+        tagName: "div",
+        template: loadTemplates('eateryDetails.html'),
+        initialize: function(options){
+            this.model = options;
+            console.log(this.model);
+        },
+
+        render: function(){
+              this.$el.html(Mustache.to_html(this.template, this.model));
+              return this;
+        },
+			events: {
+          'click .querysubmit': 'textSubmit',
+						},
+})
+App.DishSuggestionsResultView = Backbone.View.extend({
+        /*Redenred when a user search for the dish name on the search bar
+         * or in other words in window.searchtype == "dish" or 
+         * if searchtype is type cuisine, only in the case if eatery the result 
+         * would be different then these two above mentioned cases 
+         */
         tagName: "div",
         className: "afterBody",
-        template: loadTemplates('afterBody.html'),
-        initialize: function(){
-          this.model = {items:[
-            {'name':'Pixel', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
-            'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
-            ,{'name':'Pixel XL', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
-            'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
-            ,{'name':'Pixel XL CHUU', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
-            'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
-            ,{'name':'Pixel XL MA', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
-            'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
-            ,{'name':'Pixel XL KI', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
-            'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
-            ,{'name':'Pixel XL CHUU', 'display':'5.0 inches FHD AMOLED at 441ppi 2.5D Corning® Gorilla® Glass 4 >75% Active Area',
-            'size': '5.6 x 2.7 x 0.2 ~ 0.3 143.8 x 69.5 x 7 .3 ~ 8.5 mm', 'battery': '2,770 mAh battery Audio playback (via headset): up to 110 hours Fast charging up to 7 hours of use from only 15 minutes of charging'}
-
-          ]}
+        template: loadTemplates('dishSuggestions.html'),
+        initialize: function(options){
+            this.model = options;
+            console.log(this.model);
         },
 
         render: function(){

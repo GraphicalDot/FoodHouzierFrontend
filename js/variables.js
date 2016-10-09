@@ -3,5 +3,6 @@ $(document).ready(function(){
   window.App = App ;
 	window.make_request = function make_request(data){ url =  window.process_text_url ; return $.post(url, {"text": data}) }
 	window.URL = "http://localhost:8000/post_text"
-
+  ;window.suggestiona = "http://localhost:8000/suggestions";
+  ;window.text_search = "http://localhost:8000/textsearch";
 });

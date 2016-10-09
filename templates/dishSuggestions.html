@@ -1,0 +1,85 @@
+<section style="margin-top:10%">
+<div class="row">
+    <form class="col s12">
+        <div class="row">
+          <div class="input-field col s12	">
+            <i class="material-icons prefix">textsms</i>
+            <textarea id="jhandu" class="materialize-textarea"></textarea>
+            <!-- <input id="jhandu" type="text" class="validate"> -->
+            <label for="jhandu">Any Eatery Name, Dish or Cuisine or lets us surprise you.</label>
+          </div>
+          <div class="col-s3">
+          <button class="btn waves-effect waves-light waves-effect waves-light #455a64 blue-grey" type="submit" name="action">Submit
+            <i class="material-icons right">send</i>
+          </button>
+          </div>
+        </div>
+    </form>
+</div>
+</section>
+<!-- Block  -->
+<section style="margin-top:10%;">
+<div class="row col s12">
+  {{#items}}
+  <!-- 4*number of box in row(change accordingly) -->
+  <div class="col s6 shadow">
+    <h4 class="center-align">{{name}}</h4>
+    <hr>
+    <div class="row">
+      <div class="col s3"><p>Total Sentiments:</p></div>
+      <div class="col s9">
+        <p>{{total_sentiments}}</p>
+      </div>
+      <div class="col s3"><p>Eatery:</p></div>
+      <div class="col s9">
+        <p>{{eatery_name}}</p>
+      </div>
+      
+      <div class="col s3"><p>Other popular dishes</p></div>
+                {{#eatery_details.food.dishes}}
+                <div class="col s3"><p>{{name}}:</p></div>
+                    <div class="col s9">
+                        <p>{{total_sentiments}}</p>
+                    </div>
+                {{/eatery_details.food.dishes}} 
+
+
+      <div class="col s3"><p>Ambience:</p></div>
+      <div class="col s9">
+        <p>{{eatery_details.ambience.ambience-overall.total_sentiments}}% positive</p>
+      </div>
+      <div class="col s3"><p>Cost</p></div>
+      <div class="col s9">
+        <p>{{eatery_details.cost.vfm.total_sentiments}}% positive</p>
+      </div>
+      
+      <div class="col s3"><p>Service:</p></div>
+      <div class="col s9">
+        <p>{{eatery_details.service.service-overall.total_sentiments}}% positive</p>
+      </div>
+      
+      <div class="col s3"><p>menu:</p></div>
+      <div class="col s9">
+        <p>{{eatery_details.menu.total_sentiments}}% positive</p>
+      </div>
+      
+      
+      <div class="col s3"><p>Overall:</p></div>
+      <div class="col s9">
+        <p>{{eatery_details.overall.total_sentiments}}% positive</p>
+      </div>
+
+
+      <div class="col s3"><p>Eatery Address:</p></div>
+      <div class="col s9">
+        <p>{{eatery_address}}</p>
+      </div>
+    </div>
+  </div>
+  {{/items}}
+
+</div>
+</section>
+<section style="margin-top:5%;">
+<div></div>
+</section>
