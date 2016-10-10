@@ -1,0 +1,132 @@
+<section style="margin-top:10%">
+<div class="row">
+    <form class="col s12">
+        <div class="row">
+          <div class="input-field col s12	">
+            <i class="material-icons prefix">textsms</i>
+            <textarea id="jhandu" class="materialize-textarea"></textarea>
+            <!-- <input id="jhandu" type="text" class="validate"> -->
+            <label for="jhandu">Any Eatery Name, Dish or Cuisine or lets us surprise you.</label>
+          </div>
+          <div class="col-s3">
+          <button class="btn waves-effect waves-light waves-effect waves-light #455a64 blue-grey" type="submit" name="action">Submit
+            <i class="material-icons right">send</i>
+          </button>
+          </div>
+        </div>
+    </form>
+</div>
+</section>
+<!-- Block  -->
+<section style="margin-top:10%;">
+<div class="row col s12">
+  {{#items}}
+  <!-- 4*number of box in row(change accordingly) -->
+  <div class="col s12 m6 shadow" style="margin-top:3%;">
+    <h4 class="center-align">{{name}}</h4>
+    <hr>
+    <div class="row">
+      <div class="col s6 heading"><p>Total Sentiments: </p></div>
+      <div class="col s4">
+        <p>{{total_sentiments}}</p>
+      </div>
+      <div class="col s6 heading"><p>Eatery:</p></div>
+      <div class="col s4">
+        <p>{{eatery_name}}</p>
+      </div>
+
+      <div class="col s12 heading"><p>Other popular dishes: </p></div>
+
+      {{#eatery_details.food.dishes}}
+      <div class="col s6 heading"><p>{{name}}:</p></div>
+      <div class="col s4">
+        <p>{{total_sentiments}}</p>
+      </div>
+      {{/eatery_details.food.dishes}}
+
+
+      <div class="col s6 heading"><p>Ambience: </p></div>
+      <div class="col s4">
+        <!-- Circle bar -->
+        <div class="c100 p{{eatery_details.ambience.ambience-overall.total_sentiments}} xsmall">
+            <span>{{eatery_details.ambience.ambience-overall.total_sentiments}}%</span>
+            <div class="slice">
+                <div class="bar"></div>
+                <div class="fill"></div>
+            </div>
+        </div>
+        <!-- End Circle bar -->
+        <!-- <p>{{eatery_details.ambience.ambience-overall.total_sentiments}}% positive</p> -->
+      </div>
+      <div class="col s6 heading"><p>Cost</p></div>
+      <div class="col s4">
+        <!-- Circle bar -->
+        <div class="c100 p{{eatery_details.cost.vfm.total_sentiments}} xsmall">
+            <span>{{eatery_details.cost.vfm.total_sentiments}}%</span>
+            <div class="slice">
+                <div class="bar"></div>
+                <div class="fill"></div>
+            </div>
+        </div>
+        <!-- End Circle bar -->
+        <!-- <p>{{eatery_details.cost.vfm.total_sentiments}}% positive</p> -->
+      </div>
+
+      <div class="col s6 heading"><p>Service:</p></div>
+      <div class="col s4">
+        <!-- Circle bar -->
+        <div class="c100 p{{eatery_details.service.service-overall.total_sentiments}} xsmall">
+            <span>{{eatery_details.service.service-overall.total_sentiments}}%</span>
+            <div class="slice">
+                <div class="bar"></div>
+                <div class="fill"></div>
+            </div>
+        </div>
+        <!-- End Circle bar -->
+        <!-- <p>{{eatery_details.service.service-overall.total_sentiments}}% positive</p> -->
+      </div>
+
+      <div class="col s6 heading"><p>menu:</p></div>
+      <div class="col s4">
+        <!-- Circle bar -->
+        <div class="c100 p{{eatery_details.menu.total_sentiments}} xsmall">
+            <span>{{eatery_details.menu.total_sentiments}}%</span>
+            <div class="slice">
+                <div class="bar"></div>
+                <div class="fill"></div>
+            </div>
+        </div>
+        <!-- End Circle bar -->
+        <!-- <p>{{eatery_details.menu.total_sentiments}}% positive</p> -->
+      </div>
+
+
+      <div class="col s6 heading"><p>Overall:</p></div>
+      <div class="col s4">
+        <!-- Circle bar -->
+        <div class="c100 p{{eatery_details.overall.total_sentiments}} xsmall">
+            <span>{{eatery_details.overall.total_sentiments}}%</span>
+            <div class="slice">
+                <div class="bar"></div>
+                <div class="fill"></div>
+            </div>
+        </div>
+        <!-- End Circle bar -->
+        <!-- <p>{{eatery_details.overall.total_sentiments}}% positive</p> -->
+      </div>
+
+      <div style="color:blue;">
+        <div class="col s9 heading"><p>Eatery Address:</p></div>
+        <div class="col s9 ">
+          <p>{{eatery_address}}</p>
+        </div>
+    </div>
+    </div>
+  </div>
+  {{/items}}
+
+</div>
+</section>
+<section style="margin-top:5%;">
+<div></div>
+</section>
