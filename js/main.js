@@ -167,12 +167,15 @@ App.EateryView = Backbone.View.extend({
         render: function(){
               var self = this;
               this.$el.html(Mustache.to_html(this.template, this.model));
-              self.dish_render(this.model.items.name, this.model.items.positive, this.model.items.negative, this.model.items.neutral) 
+              self.dish_render("#dish-container", this.model.items.food.name, this.model.items.food.positive, this.model.items.food.negative, this.model.items.food.neutral) 
+              self.dish_render("#ambience-container", this.model.items.ambience.name, this.model.items.ambience.positive, this.model.items.ambience.negative, this.model.items.ambience.neutral) 
+              self.dish_render("#cost-container", this.model.items.cost.name, this.model.items.cost.positive, this.model.items.cost.negative, this.model.items.cost.neutral) 
+              self.dish_render("#service-container", this.model.items.service.name, this.model.items.service.positive, this.model.items.service.negative, this.model.items.service.neutral) 
               return this;  
         },      
-        dish_render: function(name, positive, negative, neutral){  
-
-              this.$("#dish-container").highcharts({
+        dish_render: function(_selector, name, positive, negative, neutral){  
+              console.log(name)
+              this.$(_selector).highcharts({
                 chart: {
                     type: 'bar',
                     marginBottom: 20,
@@ -188,7 +191,7 @@ App.EateryView = Backbone.View.extend({
                     text: 'Top available dishes'
                       },
                 xAxis: {
-                      categories: this.model.items.name
+                      categories: name
                     },
                 yAxis: {
                     min: 0,
