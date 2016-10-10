@@ -106,7 +106,7 @@ App.RootView = Backbone.View.extend({
 						jqhr.done(function(data){
 									if (data.success == true){
                         if (window.searchtype == "dish" || window.searchtype == "cuisine"){
-					                  ;var subView = new App.DishSuggestionsResultView({"items": data.result});
+					                    var subView = new App.DishSuggestionsResultView({"items": data.result});
                              ;$("#main-container").html(subView.render().el)
                    
                         } else {
@@ -133,6 +133,30 @@ App.EaterySuggestionsResultView = Backbone.View.extend({
          * would be different then these two above mentioned cases 
          */
         tagName: "div",
+        template: loadTemplates('main.html'),
+        initialize: function(options){
+            this.model = options;
+            console.log(this.model);
+            console.log(this.model.items);
+        },
+
+        render: function(){
+              var self = this;
+              this.$el.html(Mustache.to_html(this.template, this.model));
+              $.each(this.model.items, function(index, eatery_object){
+					                  var subView = new App.EateryView({"items": eatery_object});
+                            self.$el.append(subView.render().el)
+              });
+              
+              return this;
+        },
+			events: {
+          'click .querysubmit': 'textSubmit',
+						},
+
+})
+App.EateryView = Backbone.View.extend({
+        tagName: "div",
         template: loadTemplates('eateryDetails.html'),
         initialize: function(options){
             this.model = options;
@@ -141,48 +165,27 @@ App.EaterySuggestionsResultView = Backbone.View.extend({
         },
 
         render: function(){
-              var self = this;    
+              var self = this;
               this.$el.html(Mustache.to_html(this.template, this.model));
-              
-              $.each(this.model.items, function(index, eatery_object){
+              self.dish_render(this.model.items.name, this.model.items.positive, this.model.items.negative, this.model.items.neutral) 
+              return this;  
+        },      
+        dish_render: function(name, positive, negative, neutral){  
 
-                  //    console.log(dish_object);
-					            ;var subView = new App.EachEateryDishView({"items": eatery_object});
-                        self.$el.append(subView.render().el);
-            
-              })
-              
-              return this;
-        },
-			events: {
-          'click .querysubmit': 'textSubmit',
-						},
-})
-
-
-  
-
-App.EachEateryDishView = Backbone.View.extend({
-        /*Redenred when a user search for the dish name on the search bar
-         * or in other words in window.searchtype == "dish" or 
-         * if searchtype is type cuisine, only in the case if eatery the result 
-         * would be different then these two above mentioned cases 
-         */
-        tagName: "div",
-        template: loadTemplates('eachObjectEatery.html'),
-        initialize: function(options){
-            this.model = options;
-            console.log(this.model.items);
-        },
-
-        render: function(){
-              this.$el.html(Mustache.to_html(this.template, this.model.items));
-              this.$("#container").highcharts({
+              this.$("#dish-container").highcharts({
                 chart: {
-                    type: 'bar'
+                    type: 'bar',
+                    marginBottom: 20,
+                    marginTop: 100,
+                    marginLeft: 150,
+                    marginRight: 2,
                       },
+                height: 1000,
+                credits: {
+                              enabled: false
+                                        },
                 title: {
-                    text: 'Stacked bar chart'
+                    text: 'Top available dishes'
                       },
                 xAxis: {
                       categories: this.model.items.name
@@ -196,26 +199,29 @@ App.EachEateryDishView = Backbone.View.extend({
                 plotOptions: {
                       series: {
                 stacking: 'normal'
-                    }
+                    },
+
+                  column: {
+                                        pointPadding: 10,
+                                                            borderWidth: 10
+                                                                              }
                   },
                 series: [{
                     name: 'positive',
-                    data: this.model.items.positive
+                    data: positive
                   }, {
                     name: 'neutral',
-                    data: this.model.items.neutral
+                    data: neutral
                   }, {
                     name: 'negative',
-                    data: this.model.items.negative
+                    data: negative
                 }]
     });      
-
-
-
-
-              return this;
         },
+
+
 })
+
 
  
 
