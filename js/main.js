@@ -6,6 +6,9 @@ function loadTemplates(path){
       url: 'templates/'+path,
       method: 'GET',
       dataType: 'html',
+      headers: {
+                    'Access-Control-Allow-Origin': '*'
+                },
       async: false,
       success: function(data) {
           tmpl_string = data;
