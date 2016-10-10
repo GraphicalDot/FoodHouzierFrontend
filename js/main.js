@@ -2,17 +2,14 @@ $(document).ready(function(){
 // Load template via ajax call
 
 window.searchtype = ""
-window.searchvalue = ""
-
+window.searchvalue = ""  
+  
 function loadTemplates(path){
   var tmpl_string;
   $.ajax({
       url: 'templates/'+path,
       method: 'GET',
       dataType: 'html',
-      headers: {
-                    'Access-Control-Allow-Origin': '*'
-                },
       async: false,
       success: function(data) {
           tmpl_string = data;
@@ -35,12 +32,12 @@ App.RootView = Backbone.View.extend({
           //http://coenraets.org/blog/2011/12/tutorial-html-templates-with-mustache-js/
           //$("#main-container").html(Mustache.to_html(this.template));
           this.$el.html(Mustache.to_html(this.template));
-
+           
 					var options = {
                 placeholder: "Search for eatery, dish or cuisine",
 						    categories: [{listLocation: "dish",
                             maxNumberOfElements: 5,
-                            header: "Matching dishes names"},
+                            header: "Matching dishes names"}, 
                         {listLocation: "eatery",
                             maxNumberOfElements: 5,
                             header: "Matching eateries names"},
@@ -49,9 +46,7 @@ App.RootView = Backbone.View.extend({
                             header: "Matching cuisine names"}],
                 url: function(phrase) {
 											console.log(phrase);
-    									// return "http://localhost:8000/suggestions";
-    									return window.suggestions;
-                    },
+    									return "http://localhost:8000/suggestions";},
 					      getValue: function(element) {
     							    return element.name;},
   				      ajaxSettings: {
@@ -66,19 +61,19 @@ App.RootView = Backbone.View.extend({
   					    },
 						    requestDelay: 400,
 						    theme: "plate-dark",
-
+                
                 list: {
-
+              
                   onSelectItemEvent: function() {
                         window.searchtype = $("#autocomplete-ajax").getSelectedItemData().type;
                         window.searchvalue = $("#autocomplete-ajax").val();
                   }
                 }
-
-
-
+               
+   
+   
           };
-
+					
 					      $("#autocomplete-ajax").easyAutocomplete(options);
         return this;
 	      },
@@ -113,7 +108,7 @@ App.RootView = Backbone.View.extend({
                         if (window.searchtype == "dish" || window.searchtype == "cuisine"){
 					                  ;var subView = new App.DishSuggestionsResultView({"items": data.result});
                              ;$("#main-container").html(subView.render().el)
-
+                   
                         } else {
 					                  ;var subView = new App.EaterySuggestionsResultView({"items": data.result});
                             ;$("#main-container").html(subView.render().el)
@@ -133,30 +128,105 @@ App.RootView = Backbone.View.extend({
 
 App.EaterySuggestionsResultView = Backbone.View.extend({
         /*Redenred when a user search for the dish name on the search bar
-         * or in other words in window.searchtype == "dish" or
-         * if searchtype is type cuisine, only in the case if eatery the result
-         * would be different then these two above mentioned cases
+         * or in other words in window.searchtype == "dish" or 
+         * if searchtype is type cuisine, only in the case if eatery the result 
+         * would be different then these two above mentioned cases 
          */
         tagName: "div",
         template: loadTemplates('eateryDetails.html'),
         initialize: function(options){
             this.model = options;
             console.log(this.model);
+            console.log(this.model.items);
         },
 
         render: function(){
+              var self = this;    
               this.$el.html(Mustache.to_html(this.template, this.model));
+              
+              $.each(this.model.items, function(index, eatery_object){
+
+                  //    console.log(dish_object);
+					            ;var subView = new App.EachEateryDishView({"items": eatery_object});
+                        self.$el.append(subView.render().el);
+            
+              })
+              
               return this;
         },
 			events: {
           'click .querysubmit': 'textSubmit',
 						},
 })
+
+
+  
+
+App.EachEateryDishView = Backbone.View.extend({
+        /*Redenred when a user search for the dish name on the search bar
+         * or in other words in window.searchtype == "dish" or 
+         * if searchtype is type cuisine, only in the case if eatery the result 
+         * would be different then these two above mentioned cases 
+         */
+        tagName: "div",
+        template: loadTemplates('eachObjectEatery.html'),
+        initialize: function(options){
+            this.model = options;
+            console.log(this.model.items);
+        },
+
+        render: function(){
+              this.$el.html(Mustache.to_html(this.template, this.model.items));
+              this.$("#container").highcharts({
+                chart: {
+                    type: 'bar'
+                      },
+                title: {
+                    text: 'Stacked bar chart'
+                      },
+                xAxis: {
+                      categories: this.model.items.name
+                    },
+                yAxis: {
+                    min: 0,
+                      },
+                legend: {
+                      reversed: true
+                    },
+                plotOptions: {
+                      series: {
+                stacking: 'normal'
+                    }
+                  },
+                series: [{
+                    name: 'positive',
+                    data: this.model.items.positive
+                  }, {
+                    name: 'neutral',
+                    data: this.model.items.neutral
+                  }, {
+                    name: 'negative',
+                    data: this.model.items.negative
+                }]
+    });      
+
+
+
+
+              return this;
+        },
+})
+
+ 
+
+
+
+
 App.DishSuggestionsResultView = Backbone.View.extend({
         /*Redenred when a user search for the dish name on the search bar
-         * or in other words in window.searchtype == "dish" or
-         * if searchtype is type cuisine, only in the case if eatery the result
-         * would be different then these two above mentioned cases
+         * or in other words in window.searchtype == "dish" or 
+         * if searchtype is type cuisine, only in the case if eatery the result 
+         * would be different then these two above mentioned cases 
          */
         tagName: "div",
         className: "afterBody",
