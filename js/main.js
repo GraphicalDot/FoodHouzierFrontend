@@ -60,7 +60,6 @@ App.RootView = Backbone.View.extend({
                       return data;
   					    },
 						    requestDelay: 400,
-						    theme: "plate-dark",
                 
                 list: {
               
@@ -96,22 +95,23 @@ App.RootView = Backbone.View.extend({
       },
 
       textSubmit: function(e){
+            var self = this;
             e.preventDefault();
             this.$("#sentences").html('<div class="progress #455a64 blue-grey darken-2"><div class="indeterminate"></div></div>')
 						var text = $("#autocomplete-ajax").val();
             console.log(window.searchtype)
             console.log(window.searchvalue)
-
+            this.$("#heading").html("")
 						var jqhr = $.post(window.text_search, {"text": window.searchvalue, type: window.searchtype})
 						jqhr.done(function(data){
 									if (data.success == true){
                         if (window.searchtype == "dish" || window.searchtype == "cuisine"){
 					                    var subView = new App.DishSuggestionsResultView({"items": data.result});
-                             ;$("#main-container").html(subView.render().el)
+                             ;self.$("#sentences").html(subView.render().el)
                    
                         } else {
 					                  ;var subView = new App.EaterySuggestionsResultView({"items": data.result});
-                            ;$("#main-container").html(subView.render().el)
+                            ;self.$("#sentences").html(subView.render().el)
                         };
 
                   }
@@ -133,16 +133,12 @@ App.EaterySuggestionsResultView = Backbone.View.extend({
          * would be different then these two above mentioned cases 
          */
         tagName: "div",
-        template: loadTemplates('main.html'),
         initialize: function(options){
             this.model = options;
-            console.log(this.model);
-            console.log(this.model.items);
         },
 
         render: function(){
               var self = this;
-              this.$el.html(Mustache.to_html(this.template, this.model));
               $.each(this.model.items, function(index, eatery_object){
 					                  var subView = new App.EateryView({"items": eatery_object});
                             self.$el.append(subView.render().el)
@@ -160,64 +156,86 @@ App.EateryView = Backbone.View.extend({
         template: loadTemplates('eateryDetails.html'),
         initialize: function(options){
             this.model = options;
-            console.log(this.model);
-            console.log(this.model.items);
         },
 
         render: function(){
               var self = this;
               this.$el.html(Mustache.to_html(this.template, this.model));
-              self.dish_render("#dish-container", this.model.items.food.name, this.model.items.food.positive, this.model.items.food.negative, this.model.items.food.neutral) 
-              self.dish_render("#ambience-container", this.model.items.ambience.name, this.model.items.ambience.positive, this.model.items.ambience.negative, this.model.items.ambience.neutral) 
-              self.dish_render("#cost-container", this.model.items.cost.name, this.model.items.cost.positive, this.model.items.cost.negative, this.model.items.cost.neutral) 
-              self.dish_render("#service-container", this.model.items.service.name, this.model.items.service.positive, this.model.items.service.negative, this.model.items.service.neutral) 
+              self.dish_render(950, "#dish-container", this.model.items.food.name, this.model.items.food.positive, this.model.items.food.negative, this.model.items.food.neutral) 
+              self.dish_render(200, "#menu-overall-container", this.model.items.menu_overall.name, this.model.items.menu_overall.positive, this.model.items.menu_overall.negative, this.model.items.menu_overall.neutral) 
+              self.dish_render(250, "#ambience-container", this.model.items.ambience.name, this.model.items.ambience.positive, this.model.items.ambience.negative, this.model.items.ambience.neutral) 
+              self.dish_render(250, "#cost-container", this.model.items.cost.name, this.model.items.cost.positive, this.model.items.cost.negative, this.model.items.cost.neutral) 
+              self.dish_render(250, "#service-container", this.model.items.service.name, this.model.items.service.positive, this.model.items.service.negative, this.model.items.service.neutral) 
               return this;  
         },      
-        dish_render: function(_selector, name, positive, negative, neutral){  
+        dish_render: function(h, _selector, name, positive, negative, neutral){  
               console.log(name)
               this.$(_selector).highcharts({
                 chart: {
+                    
+                    color: "#EAE3EA",      
+                    polar: true,
                     type: 'bar',
                     marginBottom: 20,
-                    marginTop: 100,
+                    marginTop: 50,
                     marginLeft: 150,
                     marginRight: 2,
+                    height: h,
                       },
-                height: 1000,
                 credits: {
                               enabled: false
                                         },
                 title: {
-                    text: 'Top available dishes'
+                    text: (function(_selector){
+                        return 
+                    })()
                       },
                 xAxis: {
+                       lineWidth: 0,
+                          gridLineWidth: 0,
+                             lineColor: 'transparent',
                       categories: name
                     },
                 yAxis: {
+                       lineWidth: 0,
+                          gridLineWidth: 0,
+                             lineColor: 'transparent',
                     min: 0,
                       },
-                legend: {
-                      reversed: true
-                    },
                 plotOptions: {
                       series: {
-                stacking: 'normal'
-                    },
+                          stacking: 'percent',
+                          pointWidth: 13
+                      },
 
                   column: {
                                         pointPadding: 10,
                                                             borderWidth: 10
                                                                               }
                   },
+                 legend: {enabled: false},
+                             exporting: {enabled: false},
                 series: [{
                     name: 'positive',
-                    data: positive
-                  }, {
+                    data: positive,
+                    color: "#A7B3A5",  
+                    dataLabels: {
+                                      enabled: true,
+                    },
+                
+                }, {
                     name: 'neutral',
-                    data: neutral
+                    data: neutral,
+                    dataLabels: {
+                                      enabled: true,
+                    },
                   }, {
                     name: 'negative',
-                    data: negative
+                    data: negative,
+                    color: "#B56357",  
+                    dataLabels: {
+                                      enabled: true,
+                    },
                 }]
     });      
         },
