@@ -162,10 +162,10 @@ App.EateryView = Backbone.View.extend({
               var self = this;
               this.$el.html(Mustache.to_html(this.template, this.model));
               self.dish_render(950, "#dish-container", this.model.items.food.name, this.model.items.food.positive, this.model.items.food.negative, this.model.items.food.neutral) 
-              self.dish_render(200, "#menu-overall-container", this.model.items.menu_overall.name, this.model.items.menu_overall.positive, this.model.items.menu_overall.negative, this.model.items.menu_overall.neutral) 
-              self.dish_render(250, "#ambience-container", this.model.items.ambience.name, this.model.items.ambience.positive, this.model.items.ambience.negative, this.model.items.ambience.neutral) 
-              self.dish_render(250, "#cost-container", this.model.items.cost.name, this.model.items.cost.positive, this.model.items.cost.negative, this.model.items.cost.neutral) 
-              self.dish_render(250, "#service-container", this.model.items.service.name, this.model.items.service.positive, this.model.items.service.negative, this.model.items.service.neutral) 
+              self.dish_render(100, "#menu-overall-container", this.model.items.menu_overall.name, this.model.items.menu_overall.positive, this.model.items.menu_overall.negative, this.model.items.menu_overall.neutral) 
+              self.dish_render(350, "#ambience-container", this.model.items.ambience.name, this.model.items.ambience.positive, this.model.items.ambience.negative, this.model.items.ambience.neutral) 
+              self.dish_render(150, "#cost-container", this.model.items.cost.name, this.model.items.cost.positive, this.model.items.cost.negative, this.model.items.cost.neutral) 
+              self.dish_render(300, "#service-container", this.model.items.service.name, this.model.items.service.positive, this.model.items.service.negative, this.model.items.service.neutral) 
               return this;  
         },      
         dish_render: function(h, _selector, name, positive, negative, neutral){  
